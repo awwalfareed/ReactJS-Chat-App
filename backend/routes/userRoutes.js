@@ -1,9 +1,14 @@
+const e = require('express')
 const express = require('express')
-const registerUser = require("../controllers/userControllers")
+const { registerUser, authUser, allUsers } = require("../controllers/userControllers")
+const bcrypt = require("bcryptjs")
+const protect = require('../middlewares/authMiddleware')
 
 const router = express.Router()
 
-router.route("/").post(registerUser.registerUser)
-    //router.post('/login', authUser)
+require('../config/db')
+
+router.route("/").post(registerUser).get(protect, allUsers);
+router.post("/login", authUser);
 
 module.exports = router;
